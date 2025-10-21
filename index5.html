@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assignment Cover Page (Editable) - Index5</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link id="fontStylesheet" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" />
+
+  <style>
+    @page { size: A4; margin: 0; }
+    html, body { height: 100%; }
+    body {
+      width: 210mm;
+      height: 297mm;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
+      font-family: 'Merriweather', serif;
+    }
+    /* Printable border like the sample */
+    .page {
+      width: calc(210mm - 24mm);
+      height: calc(297mm - 24mm);
+      padding: 18mm 16mm;
+      border: 2px solid #000;
+      position: relative;
+    }
+    /* Hide controls on print */
+    .no-print { display: block; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff; }
+    }
+    /* Inputs look like clean inline text */
+    input[type="text"], input[type="date"], textarea {
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 0;
+      resize: none;
+      text-align: center;           /* keep content centered */
+      display: inline-block;        /* allows centering with surrounding text */
+      max-width: 100%;
+    }
+    /* Prevent line breaks for inline label+input rows to keep spacing uniform */
+    .inline-input { white-space: nowrap; }
+    .dotted { border-bottom: 1px dotted #666; }
+  </style>
+</head>
+<body>
+  <!-- Controls -->
+  <div class="no-print fixed top-3 right-3 flex gap-2 items-center text-sm">
+    <label class="text-gray-700">Template</label>
+    <select id="templateSwitcher" class="border p-1 rounded" onchange="switchTemplate(this.value)">
+      <option value="index5.html" selected>Classic (Index5)</option>
+      <option value="index6.html">Dashed (Index6)</option>
+    </select>
+    <label for="fontSelector" class="text-gray-700">Font</label>
+    <select id="fontSelector" class="border p-1 rounded" onchange="changeFont()">
+      <option value="Merriweather">Merriweather</option>
+      <option value="Lora">Lora</option>
+      <option value="Roboto Slab">Roboto Slab</option>
+      <option value="Poppins">Poppins</option>
+      <option value="Open Sans">Open Sans</option>
+    </select>
+    <label for="logoInput" class="ml-3 text-gray-700">Logo</label>
+    <input id="logoInput" type="file" accept="image/*" class="border p-1 rounded" />
+    <button onclick="window.print()" class="ml-3 px-3 py-1 bg-blue-600 text-white rounded">Download PDF</button>
+    <button onclick="resetForm()" class="px-3 py-1 bg-gray-200 rounded">Reset</button>
+  </div>
+
+  <!-- A4 Page -->
+  <main class="page mx-auto">
+    <section class="w-full h-full flex flex-col items-center text-center">
+      <div class="mt-2"></div>
+      <p class="italic text-gray-700">An Assignment On</p>
+      <h1 class="text-3xl font-black mb-2">
+        <textarea id="topic" rows="1" class="w-full text-center" placeholder="Quantum Mechanics"></textarea>
+      </h1>
+
+      <!-- Submitted by -->
+      <div class="mt-4 text-[13px] leading-6">
+        <p class="font-semibold">Submitted by:</p>
+        <p class="font-bold text-[15px]"><input type="text" id="studentName" placeholder="Your Name" /></p>
+        <p class="inline-input">Student ID: <input type="text" id="studentId" placeholder="Your ID" /></p>
+        <p class="inline-input">Session: <input type="text" id="session" placeholder="2020-21" /></p>
+        <p class="inline-input">Year: <input type="text" id="year" placeholder="04" class="w-10" />, Term: <input type="text" id="term" placeholder="I" class="w-10" /></p>
+        <p class="inline-input">Department of <input type="text" id="dept1" placeholder="Applied Mathematics" /></p>
+        <p>Noakhali Science and Technology University</p>
+      </div>
+
+      <!-- Submitted to -->
+      <div class="mt-5 text-[13px] leading-6">
+        <p class="">Submitted to:</p>
+        <p class="font-bold text-[15px]"><input type="text" id="teacherName" placeholder="Dr. Mohammad Raquibul Hossain" /></p>
+        <p class="inline-input"><input type="text" id="designation" placeholder="Professor" /></p>
+        <p class="inline-input">Department of <input type="text" id="dept2" placeholder="Applied Mathematics" /></p>
+        <p>Noakhali Science and Technology University</p>
+      </div>
+
+      <!-- Logo -->
+      <div class="my-5">
+        <img id="logo" src="assets/nstulogo.png" alt="University Logo" class="h-28 inline-block" />
+      </div>
+
+      <!-- Bottom title -->
+      <div class="mt-1 text-center">
+        <h2 class="text-base font-semibold">
+          <input type="text" id="deptLarge" placeholder="Department of Applied Mathematics" class="w-full text-center" />
+        </h2>
+        <h1 class="text-2xl font-extrabold mt-1">Noakhali Science and Technology University</h1>
+        <p class="italic text-[12px] mt-3">Date of Submission: <input type="date" id="date" /></p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function switchTemplate(value){ window.location.href = value; }
+    function changeFont() {
+      const font = document.getElementById('fontSelector').value;
+      const fontLink = document.getElementById('fontStylesheet');
+      const family = font.replace(/ /g, '+');
+      fontLink.href = `https://fonts.googleapis.com/css2?family=${family}:wght@300;400;700;900&display=swap`;
+      document.body.style.fontFamily = `'${font}', serif`;
+    }
+
+    // Resize textarea to content
+    const topicEl = document.getElementById('topic');
+    function autoResize(el){
+      el.style.height = 'auto';
+      el.style.height = (el.scrollHeight) + 'px';
+    }
+    topicEl.addEventListener('input', () => autoResize(topicEl));
+    autoResize(topicEl);
+
+    // Auto-size inline text inputs to their content for uniform spacing
+    function autoSizeInput(input){
+      input.style.width = '1px';
+      input.style.width = (input.scrollWidth) + 'px';
+    }
+    document.querySelectorAll('input[type="text"]').forEach((el)=>{
+      autoSizeInput(el);
+      el.addEventListener('input', ()=>autoSizeInput(el));
+    });
+
+    // Logo upload handler
+    document.getElementById('logoInput').addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      const img = document.getElementById('logo');
+      img.src = url;
+      img.onload = () => URL.revokeObjectURL(url);
+    });
+
+    function resetForm() {
+      document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = '');
+      document.getElementById('date').value = '';
+      document.getElementById('logo').src = 'assets/nstulogo.png';
+      // Recompute sizes after clearing
+      document.querySelectorAll('input[type="text"]').forEach((el)=>autoSizeInput(el));
+    }
+  </script>
+</body>
+</html>
+
+

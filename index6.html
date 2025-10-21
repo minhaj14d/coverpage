@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assignment Cover Page (Dashed Template) - Index6</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link id="fontStylesheet" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap" />
+
+  <style>
+    @page { size: A4; margin: 0; }
+    html, body { height: 100%; }
+    body {
+      width: 210mm;
+      height: 297mm;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
+      font-family: 'Merriweather', serif;
+    }
+    .outer { width: calc(210mm - 12mm); height: calc(297mm - 12mm); padding: 6mm; }
+    .dash-border { border: 6px dashed #2b6cb0; border-radius: 6px; padding: 4mm; height: 100%; }
+    .page { border: 2px solid #1f2937; height: 100%; position: relative; padding: 18mm 16mm; }
+    /* Hide controls on print */
+    .no-print { display: block; }
+    @media print { .no-print { display: none !important; } }
+    input[type="text"], input[type="date"], textarea { border: none; outline: none; background: transparent; padding: 0; resize: none; text-align: center; display: inline-block; max-width: 100%; }
+  </style>
+</head>
+<body>
+  <!-- Controls -->
+  <div class="no-print fixed top-3 right-3 flex gap-2 items-center text-sm">
+    <label class="text-gray-700">Template</label>
+    <select id="templateSwitcher" class="border p-1 rounded" onchange="switchTemplate(this.value)">
+      <option value="index5.html">Classic (Index5)</option>
+      <option value="index6.html" selected>Dashed (Index6)</option>
+    </select>
+    <label for="fontSelector" class="text-gray-700">Font</label>
+    <select id="fontSelector" class="border p-1 rounded" onchange="changeFont()">
+      <option value="Merriweather">Merriweather</option>
+      <option value="Lora">Lora</option>
+      <option value="Roboto Slab">Roboto Slab</option>
+      <option value="Poppins">Poppins</option>
+      <option value="Open Sans">Open Sans</option>
+    </select>
+    <label for="logoInput" class="ml-3 text-gray-700">Logo</label>
+    <input id="logoInput" type="file" accept="image/*" class="border p-1 rounded" />
+    <button onclick="window.print()" class="ml-3 px-3 py-1 bg-blue-600 text-white rounded">Download PDF</button>
+    <button onclick="resetForm()" class="px-3 py-1 bg-gray-200 rounded">Reset</button>
+  </div>
+
+  <div class="outer">
+    <div class="dash-border">
+      <main class="page">
+        <section class="w-full h-full flex flex-col items-center text-center">
+          <p class="italic text-gray-700 mt-2">An Assignment on</p>
+          <h1 class="text-2xl font-extrabold text-blue-700">
+            <textarea id="topic" rows="1" class="w-full text-center" placeholder="Assignment-2 on Trigonometry"></textarea>
+          </h1>
+
+          <div class="flex justify-center my-3">
+            <img id="logo" src="assets/nstulogo.png" alt="University Logo" class="h-28" />
+          </div>
+
+          <!-- Course info -->
+          <div class="text-[14px] leading-6">
+            <p class="font-semibold">Course Title: <input type="text" placeholder="Trigonometry (Plane & Spherical)" class="font-normal" /></p>
+            <p class="font-semibold">Course Code: <input type="text" placeholder="A.MTH-2201" class="font-normal" /></p>
+            <p>Session: <input type="text" placeholder="2020-2021" />
+              <span class="ml-3"></span>
+              Year: <input type="text" placeholder="02" class="w-10" />, Term: <input type="text" placeholder="02" class="w-10" /></p>
+          </div>
+
+          <!-- Two columns -->
+          <div class="grid grid-cols-2 gap-8 w-full mt-6">
+            <div class="text-left">
+              <h3 class="text-blue-700 font-bold">Submitted By:</h3>
+              <p class="font-bold"><input type="text" placeholder="Your Name" class="" /></p>
+              <p>Roll: <input type="text" placeholder="Your Roll" /></p>
+              <p>Session: <input type="text" placeholder="2020-2021" /></p>
+              <p>Year: <input type="text" placeholder="02" class="w-10" />, Term: <input type="text" placeholder="02" class="w-10" /></p>
+              <p>Department of <input type="text" placeholder="Applied Mathematics" /></p>
+              <p>Noakhali Science and Technology University.</p>
+            </div>
+            <div class="border-l-4 border-blue-700 pl-6 text-left">
+              <h3 class="text-blue-700 font-bold">Submitted To:</h3>
+              <p class="font-bold"><input type="text" placeholder="Teacher's Name" /></p>
+              <p><input type="text" placeholder="Assistant Professor" /></p>
+              <p>Department of <input type="text" placeholder="Applied Mathematics" /></p>
+              <p>Noakhali Science and Technology University.</p>
+            </div>
+          </div>
+
+          <!-- Bottom -->
+          <div class="text-center mt-8">
+            <h2 class="text-lg font-extrabold">Department of <input type="text" placeholder="Applied Mathematics" /></h2>
+            <h1 class="text-2xl font-extrabold text-blue-700 mt-1">Noakhali Science and Technology University</h1>
+            <p class="mt-1">Sonapur, Noakhali-3814, Bangladesh</p>
+            <p class="italic mt-4">Date of Submission: <input type="date" id="date" /></p>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function changeFont() {
+      const font = document.getElementById('fontSelector').value;
+      const fontLink = document.getElementById('fontStylesheet');
+      const family = font.replace(/ /g, '+');
+      fontLink.href = `https://fonts.googleapis.com/css2?family=${family}:wght@300;400;700;900&display=swap`;
+      document.body.style.fontFamily = `'${font}', serif`;
+    }
+    function switchTemplate(value) { window.location.href = value; }
+    // Logo upload
+    document.getElementById('logoInput').addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      const img = document.getElementById('logo');
+      img.src = url;
+      img.onload = () => URL.revokeObjectURL(url);
+    });
+    function resetForm() {
+      document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = '');
+      document.getElementById('date').value = '';
+      document.getElementById('logo').src = 'assets/nstulogo.png';
+    }
+  </script>
+</body>
+</html>
+
+
